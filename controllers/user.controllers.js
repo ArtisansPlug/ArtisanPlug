@@ -1,4 +1,5 @@
 const User = require("../models/user.models");
+const Provider = require("../models/provider.models");
 const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");
@@ -109,6 +110,47 @@ exports.EditUser = async (req, res) => {
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
 
+exports.SearchForProviders = async (req, res) => {
+  const { keyword } = req.query;
+  try {
+    const user = await Provider.find({
+      $or: [
+        { username: { $regex: keyword, $options: "i" } },
+        { category: { $regex: keyword, $options: "i" } },
+        { mostRated: { $regex: keyword, $options: "i" } },
+        { location: { $regex: keyword, $options: "i" } },
+      ],
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+exports.AddFavoriteArtisan = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    const updateUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { favoriteProvider: req.provider.id },
+      },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ message: "Favorite Artisan Added", updateUser });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };

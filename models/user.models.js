@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
     },
+    favoriteProvider: {
+      type: [String]
+    },
     phoneNumber: {
       type: String,
       trim: true,

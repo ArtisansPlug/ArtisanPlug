@@ -1,5 +1,5 @@
 const User = require("../models/user.models");
-const Provider = require("../models/provider.models");
+//const Provider = require("../models/provider.models");
 const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");

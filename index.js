@@ -4,6 +4,7 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectDB= require("./db/db")
+
 const userRoutes = require('./routes/user.routes')
 const adminRoutes = require('./routes/admin.routes')
 

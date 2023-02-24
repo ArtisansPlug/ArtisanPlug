@@ -46,7 +46,7 @@ exports.AllUsers = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({ user });
+    return res.status(200).json({ messag:"All users on the database", user });
   } catch (error) {
 
     return res.status(500).json({ message: error.message });
@@ -62,9 +62,10 @@ exports.countUsersAndArtisans = async (req, res) => {
     const adminCount = await User.countDocuments({ role: "admin" });
 
     return res.status(200).json({
-      userCount,
-      providerCount,
-      adminCount
+      message:"Here the breakdown of Users on the platform",
+      numberOfUsers:userCount,
+      numberOfProviders:providerCount,
+      numberOfAdmin:adminCount
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

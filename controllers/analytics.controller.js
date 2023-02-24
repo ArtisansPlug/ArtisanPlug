@@ -8,7 +8,7 @@ exports.getSignupsForToday = async (req, res) => {
     const numSignups = await User.countDocuments({
       createdAt: { $gte: startDate, $lt: endDate },
     });
-    res.json({ signups: numSignups });
+    res.json({ message:`total sign up for today is: ${numSignups}` });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error fetching signups" });

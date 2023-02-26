@@ -1,13 +1,15 @@
 const express = require('express');
-const { SignUp, Login, UploadImage, EditUser,  SearchForProviders, AddFavoriteArtisan } = require('../controllers/user.controllers');
+const { SignUp, Login, UploadImage, EditUser,  SearchForProviders, AddFavoriteArtisan, Request, Feedback } = require('../controllers/user.controllers');
 const upload = require('../utils/multer');
-const authenticate = require('../middleware/auth');
+const {authenticate} = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/register', SignUp);
 router.post('/login', Login);
 router.post('/profile/:id', EditUser);
+router.post('/request/:id',authenticate, Request);
+router.post('/addfavorite/:id',authenticate, AddFavoriteArtisan);
+router.post('/feedback/:id', Feedback);
 router.get('/search', SearchForProviders);
-router.post('/addfavorite', AddFavoriteArtisan);
 router.post('/upload', authenticate, upload.single('image'), UploadImage);
 module.exports = router;

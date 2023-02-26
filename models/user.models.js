@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema(
     fullName: {
       type: String,
       required: [true, "Please provide a full name"],
-      unique: true,
       trim: true,
       minlength: [3, "Full name must be at least 3 characters long"],
     },
@@ -35,7 +34,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Please enter a password"],
-      minlength: [4, "Password must be at least 4 characters long"],
+       minlength: [4, "Password must be at least 4 characters long"],
     },
     email: {
       type: String,
@@ -50,7 +49,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       trim: true,
-      enum: ["admin", "user"],
+      enum: ["admin", "user", "provider"],
       default: "user",
     },
   },

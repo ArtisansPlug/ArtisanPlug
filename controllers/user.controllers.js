@@ -1,5 +1,6 @@
 const User = require("../models/user.models");
 const Provider = require("../models/provider.models");
+const nodemailer = require("nodemailer");
 const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");
@@ -118,9 +119,9 @@ exports.SearchForProviders = async (req, res) => {
   try {
     const user = await Provider.find({
       $or: [
-        { username: { $regex: keyword, $options: "i" } },
+        { fullName: { $regex: keyword, $options: "i" } },
         { category: { $regex: keyword, $options: "i" } },
-        { mostRated: { $regex: keyword, $options: "i" } },
+        // { ratings: { $regex: keyword, $options: "i" } },
         { location: { $regex: keyword, $options: "i" } },
       ],
     });
@@ -135,15 +136,16 @@ exports.SearchForProviders = async (req, res) => {
 
 exports.AddFavoriteArtisan = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    providerId = req.params.id;
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "user not found" });
     }
 
     const updateUser = await User.findByIdAndUpdate(
-      req.params.id,
+      req.user.id,
       {
-        $push: { favoriteProvider: req.provider.id },
+        $push: { favoriteProvider: providerId },
       },
       { new: true }
     );
@@ -152,5 +154,57 @@ exports.AddFavoriteArtisan = async (req, res) => {
       .json({ message: "Favorite Artisan Added", updateUser });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+exports.Request = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const provider = await Provider.findById(req.params.id);
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.USER_MAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+    const mailOptions = {
+      from: "boluwatifefred@gmail.com",
+      to: provider.email,
+      subject: ` You Just Got A Request On Plug`,
+      html: `
+    <p>${user.fullName} just sent you a request</p>
+    <p>Login to the app to confirm this request or contact the user with the line ${user.phoneNumber} or email ${user.email}</p>
+    `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      }
+      console.log("Email Sent to " + info.accepted);
+    });
+    return res.status(200).json({ message: "Request Sent To Provider" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+exports.Feedback = async (req, res) => {
+  try {
+    const userReviews = req.body;
+    const feed = JSON.stringify(userReviews)
+    const provider = await Provider.findByIdAndUpdate(
+      req.params.id,
+      {
+        reviews: feed, 
+      },
+      { new: true }
+    );
+    return res
+    .status(200)
+    .json({ message: "Review Added", provider });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+
   }
 };

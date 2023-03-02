@@ -191,12 +191,38 @@ exports.Request = async (req, res) => {
 
 exports.Feedback = async (req, res) => {
   try {
-    const userReviews = req.body;
-    const feed = JSON.stringify(userReviews)
+    // const user = await User.findById(req.user.id);
+    // if (!user) {
+    //   return res.status(404).json({ message: "user not found" });
+    // }
+    // const fullName = user.fullName;
+    const {userReviews }= req.body;
     const provider = await Provider.findByIdAndUpdate(
       req.params.id,
       {
-        reviews: feed, 
+         $push: { reviews: userReviews},
+
+      
+      },
+      { new: true }
+    );
+    return res
+    .status(200)
+    .json({ message: "Review Added", provider });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+
+  }
+};
+exports.Rating = async (req, res) => {
+  try {
+    const {userRating }= req.body;
+    const provider = await Provider.findByIdAndUpdate(
+      req.params.id,
+      {
+         $push: { ratings: userRating},
+
+      
       },
       { new: true }
     );

@@ -9,7 +9,7 @@ const providerSchema = new mongoose.Schema(
 
     },
     reviews: {
-      type: String,
+      type: [String],
     },
     ratings: {
 type: [Number],

@@ -1,20 +1,7 @@
 const User = require("../models/user.models");
+const Alert = require("../models/alert.models")
 const fs = require("fs");
 
-// exports.SwitchToAdmin = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-//     user.role = "admin";
-//     await user.save();
-//     return res.status(200).json({ message: "User role changed to admin" });
-//   } catch (error) {
-//     logger.error(error);
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
 
 exports.SwitchToAdmin = async(req,res)=>{
   const {id} = req.params;
@@ -43,10 +30,10 @@ exports.SwitchToAdmin = async(req,res)=>{
 exports.AllUsers = async (req, res) => {
   try {
     const user = await User.find();
-    if (!user) {
+    if (!user || user.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({ messag:"All users on the database", user });
+    return res.status(200).json({ message:"All users on the database", users:user });
   } catch (error) {
 
     return res.status(500).json({ message: error.message });
@@ -91,3 +78,36 @@ exports.softDeleteUser = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.createAlert = async(req, res) => {
+  try{
+  const newAlert = await Alert.create(req.body)
+  return res.status(200).json({ message: "Alert created successfully", newAlert});
+}catch(error){
+  console.error("Error while adding a new alert", error);
+  return res.status(500).json({ message: "Server error" });
+}
+}
+
+exports.fetchAllAlerts = async(req, res) => {
+  try{
+    const allAlert = await Alert.find()
+    return res.status(200).json({ message: "Alerts fetched successfully", allAlert});
+  }catch(error){
+    console.error("Error while fetching Users", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+exports.fetchActiveAlerts = async(req, res) => {
+  try{
+    const active = await Alert.find({isActive:true})
+    if(!active || active.length === 0){
+      return res.status(400).json({ message: "no active alerts available", active});
+    }
+    return res.status(200).json({ message: "Alerts fetched successfully", active});
+  }catch(error){
+    console.error("Error while fetching active Users", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}

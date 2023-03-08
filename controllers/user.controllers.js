@@ -89,7 +89,7 @@ exports.UploadImage = async (req, res) => {
 exports.EditUser = async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
-    "username",
+    "fullName",
     "email",
     "password",
     "address",

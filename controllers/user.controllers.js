@@ -1,5 +1,4 @@
 const User = require("../models/user.models");
-const Provider = require("../models/provider.models");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const sharp = require("sharp");

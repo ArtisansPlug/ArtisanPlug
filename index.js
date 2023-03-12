@@ -8,6 +8,7 @@ const connectDB= require("./db/db")
 const userRoutes = require('./routes/user.routes')
 const adminRoutes = require('./routes/admin.routes')
 const analyticsRoutes = require('./routes/analytics.routes')
+const providerRouter = require('./routes/artisanRouter');
 
 
 const port = process.env.PORT || 3100;
@@ -35,6 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/analytics', analyticsRoutes);
+
+app.use('/provider', providerRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World");

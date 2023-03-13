@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 
-const connectDB = async()=>{
+const connectDBC = async()=>{
     try {
         const ConDB = await mongoose.connect(process.env.MONGODB_URL)
         console.log("Artisan DataBase is Connected");
@@ -17,4 +17,4 @@ const connectDB = async()=>{
 
 
 
-module.exports = connectDB;
+module.exports = connectDBC;

@@ -16,9 +16,7 @@ const providerSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    Password: {
-        type: String,
-    },
+    
     PhoneNumber: {
         type: String,
         required: true,
@@ -37,7 +35,6 @@ const providerSchema = new mongoose.Schema({
     },
     YearsOfExperience: {
         type: String,
-        required: true,
     },
     Address: {
         type: String,
@@ -46,11 +43,7 @@ const providerSchema = new mongoose.Schema({
         type: String,
         default: "my image"
     },
-    JobPictures: {
-        type: String,
-        enum: [],
-    }
-
+   
 },
 {
     timestamps: true

@@ -11,28 +11,28 @@ const Cloudinary = require("../utils/artisanCloudinary");
 
 exports.createProvider = async (req, res) =>{
     try {
-        const { Name, Email, PhoneNumber, Password } = req.body;
-        if(!( Name|| Email|| PhoneNumber|| Password )){
+        const { Name, Email, PhoneNumber, Profession, YearOfExperience, Address, ProfilePicture, JobPictures } = req.body;
+        if(!( Name|| Email|| PhoneNumber)){
             return res.status(501).send("All field needed to be filled")
         };
         const existUser = await Provider.findOne({Email})
         if(existUser){
             return res.status(501).send("Your email exist in our database. Kindly login or use forgot password")
         };
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(Password, salt)
+        // const salt = await bcrypt.genSalt(10);
+        // const hashedPassword = await bcrypt.hash(Password, salt)
+        const cloudinary = await Cloudinary.uploader.upload(req.file.path);
 
         const newUser = await Provider.create({
             Name,
             Email,
             PhoneNumber,
-            Password: hashedPassword,            
-        })
-        await sendEmail ({
-            email: newUser.email,
-            subject: `${newUser.Name}, Verify your email`,
-            message: `Kindly click on the link to verify your email  ${process.env.EMAIL_URL}/${newUser.id} <br>`                   
-        })
+            Profession, 
+            YearOfExperience, 
+            Address, 
+            ProfilePicture: cloudinary.secure_url, 
+            });
+       
         return res.status(201).send(newUser);
     } catch (error) {
         return res.status(500).send({
@@ -147,8 +147,7 @@ exports.providerForm = async (req, res)=>{
                 Profession, 
                 YearOfExperience, 
                 Address, 
-                ProfilePicture: cloudinary, 
-                JobPictures
+                ProfilePicture: cloudinary,
             },
             {
                 new: true
@@ -167,7 +166,23 @@ exports.providerForm = async (req, res)=>{
 exports.deleteProvider = async(req, res)=>{
     try {
         const id = req.user;
-        const user = await Provider.findByIdAndDelete({id})
+        if(id == null){
+            return res.status(401).send("you are not login yet")
+        }
+        const user = await Provider.findByIdAndDelete(
+            {
+                id
+            },
+            {
+                Name,
+                Email,
+                PhoneNumber,
+                Profession, 
+                YearOfExperience, 
+                Address, 
+                ProfilePicture, 
+            }
+            )
         return res.status(200).send({ status: "You have successfully deleted your profile", user });
     } catch (error) {
         return res.status({

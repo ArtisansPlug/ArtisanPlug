@@ -9,7 +9,7 @@ const artisanSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Provider"
     },
-    artisanJobs: {
+    artisanJobsPic: {
         type: String,
         enum: [],
     },

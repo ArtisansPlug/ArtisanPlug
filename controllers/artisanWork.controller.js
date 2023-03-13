@@ -17,7 +17,7 @@ exports.createArtisan = async(req, res)=>{
         const artistPic = await Cloudinary.uploader.upload(req.file.path);
         const user = await Artisan.create({
             userId: artist._id,
-            artisanJobs: artistPic ,
+            artisanJobsPic: artistPic.secure_url,
             jobTitle,
         })
         return res.status(201).send({ message: "You have successfully upload your work", user })
@@ -60,7 +60,7 @@ exports.updateArtisan = async(req, res)=>{
                 _id: user._id
             },
             {
-                artisanJobs: artistPic,
+                artisanJobsPic: artistPic,
                 jobTitle,
             },
             {

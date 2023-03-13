@@ -5,15 +5,25 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectDB= require("./db/db")
 
+
 const userRoutes = require('./routes/user.routes')
 const adminRoutes = require('./routes/admin.routes')
 const analyticsRoutes = require('./routes/analytics.routes')
 const providerRouter = require('./routes/artisanRouter');
 
+const xss = require("xss-clean");
+const helmet = require("helmet");
+const mongoSanitize = require('express-mongo-sanitize');
+const connectDBC = require("./database/artisanDB");
+
+
+
+
 
 const port = process.env.PORT || 3100;
 const app = express();
 connectDB();
+connectDBC();
 const loggerMiddleware = (req, res, next) => {
   console.log(`New request to:` + req.method + " " + req.path);
   next();
@@ -33,6 +43,11 @@ app.use(
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(xss());
+app.use(helmet());
+app.use(mongoSanitize());
+
+
 app.use('/api', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/analytics', analyticsRoutes);

@@ -1,5 +1,5 @@
-const User = require("../models/user.models");
-const Alert = require("../models/alert.models")
+const User = require("../../models/user.models");
+const Alert = require("../../models/alert.models")
 const fs = require("fs");
 
 

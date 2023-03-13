@@ -1,11 +1,11 @@
-const User = require("../models/user.models");
+const User = require("../../models/user.models");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const cloudinary = require("../utils/cloudinary");
-const { passwordHash, passwordCompare } = require("../helper/hashing");
+const cloudinary = require("../../utils/cloudinary");
+const { passwordHash, passwordCompare } = require("../../helper/hashing");
 
 exports.SignUp = async (req, res, next) => {
   const { fullName, email, password } = req.body;

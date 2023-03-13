@@ -1,11 +1,5 @@
-const Transaction = require('../models/transaction.model');
-const sendEmail = require('../utils/artisanEmail');
-
-
-
-
-
-
+const Transaction = require('../../models/transaction.model');
+const sendEmail = require('../../utils/artisanEmail');
 
 
 // to receive event and Paystack data from convoy webhook

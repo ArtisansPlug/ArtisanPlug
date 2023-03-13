@@ -1,9 +1,6 @@
-const Artisan = require("../models/artisanWorks.model");
-const Cloudinary = require("../utils/artisanCloudinary");
-const Provider = require("../models/provider.model");
-
-
-
+const Artisan = require("../../models/artisanWorks.model");
+const Cloudinary = require("../../utils/artisanCloudinary");
+const Provider = require("../../models/provider.model");
 
 
 

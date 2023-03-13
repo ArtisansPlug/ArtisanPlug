@@ -1,5 +1,5 @@
 const express = require('express');
-const { SignUp, Login, UploadImage, EditUser,  SearchForProviders, AddFavoriteArtisan, Request, Feedback, Rating } = require('../controllers/user.controllers');
+const { SignUp, Login, UploadImage, EditUser,  SearchForProviders, AddFavoriteArtisan, Request, Feedback, Rating } = require('../controllers/users/user.controllers');
 const upload = require('../utils/multer');
 const {authenticate} = require('../middleware/auth');
 const router = express.Router();

@@ -1,5 +1,5 @@
 const express = require('express');
-const { SwitchToAdmin, AllUsers, countUsersAndArtisans, softDeleteUser, createAlert, fetchAllAlerts, fetchActiveAlerts } = require('../controllers/admin.controllers');
+const { SwitchToAdmin, AllUsers, countUsersAndArtisans, softDeleteUser, createAlert, fetchAllAlerts, fetchActiveAlerts } = require('../controllers/admin/admin.controllers');
 const { authenticate, isAdmin} = require("../middleware/auth");
 const router = express.Router();
 

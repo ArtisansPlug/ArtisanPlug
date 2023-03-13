@@ -1,4 +1,4 @@
-const User = require("../models/user.models");
+const User = require("../../models/user.models");
 const moment = require("moment");
 
 exports.getSignupsForToday = async (req, res) => {

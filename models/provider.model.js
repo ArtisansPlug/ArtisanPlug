@@ -1,11 +1,5 @@
 const mongoose = require("mongoose");
 
-
-
-
-
-
-
 const providerSchema = new mongoose.Schema({
     Name: {
         type: String,
@@ -37,7 +31,7 @@ const providerSchema = new mongoose.Schema({
     },
     YearsOfExperience: {
         type: String,
-        required: true,
+        
     },
     Address: {
         type: String,

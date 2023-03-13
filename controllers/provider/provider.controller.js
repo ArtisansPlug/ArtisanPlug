@@ -1,12 +1,8 @@
-const Provider = require("../models/provider.model");
+const Provider = require("../../models/provider.model");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sendEmail = require('../utils/artisanEmail');
-const Cloudinary = require("../utils/artisanCloudinary");
-
-
-
-
+const sendEmail = require('../../utils/artisanEmail');
+const Cloudinary = require("../../utils/artisanCloudinary");
 
 
 exports.createProvider = async (req, res) =>{
@@ -29,7 +25,7 @@ exports.createProvider = async (req, res) =>{
             Password: hashedPassword,            
         })
         await sendEmail ({
-            email: newUser.email,
+            email: newUser.Email,
             subject: `${newUser.Name}, Verify your email`,
             message: `Kindly click on the link to verify your email  ${process.env.EMAIL_URL}/${newUser.id} <br>`                   
         })

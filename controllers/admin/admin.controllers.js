@@ -1,5 +1,6 @@
 const User = require("../../models/user.models");
 const Alert = require("../../models/alert.models")
+const Provider = require("../../models/provider.model");
 const fs = require("fs");
 
 
@@ -40,12 +41,25 @@ exports.AllUsers = async (req, res) => {
   }
 };
 
+exports.AllProviders = async (req, res) => {
+  try {
+    const user = await Provider.find();
+    if (!user || user.length === 0) {
+      return res.status(404).json({ message: "No provider found" });
+    }
+    return res.status(200).json({ message:"All providers on the database", users:user });
+  } catch (error) {
+
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 exports.countUsersAndArtisans = async (req, res) => {
   try {
 
     const userCount = await User.countDocuments({ role: "user" });
-    const providerCount = await User.countDocuments({ role: "provider" });
+    const providerCount = await Provider.countDocuments({ Email: { $ne: "" } });
     const adminCount = await User.countDocuments({ role: "admin" });
 
     return res.status(200).json({

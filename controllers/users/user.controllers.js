@@ -169,7 +169,7 @@ exports.Request = async (req, res) => {
     });
     const mailOptions = {
       from: "boluwatifefred@gmail.com",
-      to: provider.email,
+      to: provider.Email,
       subject: ` You Just Got A Request On Plug`,
       html: `
     <p>${user.fullName} just sent you a request</p>

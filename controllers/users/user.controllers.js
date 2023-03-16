@@ -4,6 +4,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const Provider = require("../../models/provider.model")
 const cloudinary = require("../../utils/cloudinary");
 const { passwordHash, passwordCompare } = require("../../helper/hashing");
 
@@ -57,19 +58,20 @@ exports.Login = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 exports.UploadImage = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     // upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "user",
       width: 150,
       crop: "scale",
     });
+   
     // resize image using sharp use path.join()
     // const resizedImage = await sharp(req.file.path)
     //   .resize(150, 150)
@@ -81,7 +83,7 @@ exports.UploadImage = async (req, res) => {
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ error});
   }
 };
 
@@ -120,7 +122,6 @@ exports.SearchForProviders = async (req, res) => {
       $or: [
         { fullName: { $regex: keyword, $options: "i" } },
         { category: { $regex: keyword, $options: "i" } },
-        // { ratings: { $regex: keyword, $options: "i" } },
         { location: { $regex: keyword, $options: "i" } },
       ],
     });

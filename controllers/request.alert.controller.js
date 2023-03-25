@@ -1,5 +1,6 @@
 const Request = require('../models/request.model');
 const sendEmail = require('../utils/artisanEmail');
+const User = require("../models/user.models");
 
 
 
